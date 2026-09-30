@@ -1,0 +1,6 @@
+{
+  "name": "Bursary Finder SA",
+  "description": "Find verified South African bursaries, NSFAS funding, and scholarships matched to your marks, study field, and financial profile.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

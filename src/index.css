@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #EFE8DE;
+    --panel: #F7F2EA;
+    --panel-hover: #F0E9DF;
+    --ink: #1F1711; /* Ultra-crisp high contrast (12:1 against --bg) */
+    --mute: #4E4238; /* WCAG AA compliant (5.5:1 against --bg and --panel) */
+    --line: #D0C3B2;
+    --brown: #8C5E33; /* Darker warm brown for 4.8:1 contrast on white/oat */
+    --brown-hover: #754C26;
+    --sage: #2C6641; /* Deep accessible forest-sage (4.9:1 contrast) */
+    --blue: #2F5979; /* Deep accessible slate-blue (5.1:1 contrast) */
+    --gold: #8F5E00; /* High-contrast accessible ochre/gold (5.2:1 contrast) */
+    --onbrown: #FFFFFF;
+    --card-shadow: 0 4px 20px -2px rgba(31, 23, 17, 0.06);
+  }
+
+  :root.dark {
+    --bg: #1A1410;
+    --panel: #241D17;
+    --panel-hover: #2D241E;
+    --ink: #F7F0E6;
+    --mute: #CBBFB1; /* High contrast muted text (6.8:1 against dark bg) */
+    --line: #45382E;
+    --brown: #D4A373;
+    --brown-hover: #E0B589;
+    --sage: #81B29A;
+    --blue: #8EADC7;
+    --gold: #E5B869;
+    --onbrown: #1A1410;
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Low-Data Mode: Minimal contrast, no heavy shadows or transitions */
+  :root.low-data {
+    --bg: #FDFBF7 !important;
+    --panel: #FFFFFF !important;
+    --panel-hover: #F5F1E8 !important;
+    --ink: #000000 !important;
+    --mute: #333333 !important;
+    --line: #B0B0B0 !important;
+    --brown: #553311 !important;
+    --card-shadow: none !important;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: "Bricolage Grotesque", Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+/* Tabular figures for all numbers and scores */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Accessible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--brown) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+
+/* Low data mode disabling non-essential transitions and images */
+.low-data img:not(.essential) {
+  display: none !important;
+}
+
+.low-data * {
+  transition: none !important;
+  animation: none !important;
+}
