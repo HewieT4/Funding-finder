@@ -13,9 +13,11 @@ interface ResultsListProps {
   funds: Fund[];
   profile: LearnerProfile;
   savedFundIds: string[];
+  appliedFundIds?: string[];
   onToggleSave: (fund: Fund) => void;
   onViewDetails: (fund: Fund) => void;
   onAddToCalendar: (fund: Fund) => void;
+  onOpenWaitingListTicket?: (fund: Fund) => void;
   onEditProfile: () => void;
   lowDataMode: boolean;
 }
@@ -24,9 +26,11 @@ export const ResultsList: React.FC<ResultsListProps> = ({
   funds,
   profile,
   savedFundIds,
+  appliedFundIds = [],
   onToggleSave,
   onViewDetails,
   onAddToCalendar,
+  onOpenWaitingListTicket,
   onEditProfile,
   lowDataMode,
 }) => {
@@ -227,9 +231,11 @@ export const ResultsList: React.FC<ResultsListProps> = ({
               key={res.fund.id}
               result={res}
               isSaved={savedFundIds.includes(res.fund.id)}
+              isApplied={appliedFundIds.includes(res.fund.id)}
               onToggleSave={onToggleSave}
               onViewDetails={onViewDetails}
               onAddToCalendar={onAddToCalendar}
+              onOpenWaitingListTicket={onOpenWaitingListTicket}
               lowDataMode={lowDataMode}
             />
           ))}

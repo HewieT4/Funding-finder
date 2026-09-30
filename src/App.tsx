@@ -30,6 +30,7 @@ import { LegalCenterModal, LegalTab } from './components/LegalCenterModal';
 import { SubmitFundModal } from './components/SubmitFundModal';
 import { TestRunnerView } from './components/TestRunnerView';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
+import { ApplicationTicketModal } from './components/ApplicationTicketModal';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -43,6 +44,10 @@ export default function App() {
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
   const [activeLegalTab, setActiveLegalTab] = useState<LegalTab>('privacy');
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+
+  // Ticket modal state
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+  const [ticketFund, setTicketFund] = useState<Fund | null>(null);
 
   const [lowDataMode, setLowDataMode] = useState<boolean>(loadLowDataMode);
   const [darkMode, setDarkMode] = useState<boolean>(loadDarkMode);
@@ -160,6 +165,47 @@ export default function App() {
     setIsLegalModalOpen(true);
   };
 
+  const handleOpenTicketModal = (fund?: Fund) => {
+    if (fund) {
+      setTicketFund(fund);
+    } else {
+      // Pick first applied fund, or first saved fund, or first catalog fund
+      const appliedItem = savedItems.find((i) => i.status === 'applied');
+      const targetFund = appliedItem
+        ? funds.find((f) => f.id === appliedItem.fundId)
+        : savedItems.length > 0
+        ? funds.find((f) => f.id === savedItems[0].fundId)
+        : funds[0];
+      setTicketFund(targetFund || funds[0]);
+    }
+    setIsTicketModalOpen(true);
+  };
+
+  const handleConfirmTicketTear = (fundId: string, refCode: string) => {
+    setSavedItems((prev) => {
+      const existing = prev.find((i) => i.fundId === fundId);
+      const noteMsg = `Waiting List Confirmed (Ref: ${refCode})`;
+      if (existing) {
+        return prev.map((i) =>
+          i.fundId === fundId
+            ? { ...i, status: 'applied', notes: i.notes ? `${i.notes} · ${noteMsg}` : noteMsg }
+            : i
+        );
+      } else {
+        return [
+          ...prev,
+          {
+            fundId,
+            savedAt: new Date().toISOString().split('T')[0],
+            status: 'applied',
+            notes: noteMsg,
+            preparedDocuments: [],
+          },
+        ];
+      }
+    });
+  };
+
   const handleClearAllData = () => {
     try {
       localStorage.clear();
@@ -173,8 +219,10 @@ export default function App() {
     ? savedItems.find((item) => item.fundId === selectedFund.id)
     : undefined;
 
+  const appliedCount = savedItems.filter((i) => i.status === 'applied').length;
+
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--ink)]">
+    <div className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--ink)] pb-16 lg:pb-0">
       {/* Accessible skip link */}
       <a
         href="#main-content"
@@ -183,15 +231,18 @@ export default function App() {
         Skip to main content
       </a>
 
-      {/* Top Bar Contract Compliant Navbar */}
+      {/* Top Bar - Clean styling with ZERO black shading under menu */}
       <Navbar
         currentView={currentView}
         onNavigate={setCurrentView}
         savedCount={savedItems.length}
+        appliedCount={appliedCount}
         lowDataMode={lowDataMode}
         onToggleLowData={() => setLowDataMode((prev) => !prev)}
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+        onOpenTicketsModal={() => handleOpenTicketModal()}
+        onOpenLegalTab={handleOpenLegalTab}
       />
 
       {/* Main Content Area */}
@@ -219,9 +270,11 @@ export default function App() {
               funds={funds}
               profile={profile}
               savedFundIds={savedItems.map((i) => i.fundId)}
+              appliedFundIds={savedItems.filter((i) => i.status === 'applied').map((i) => i.fundId)}
               onToggleSave={handleToggleSave}
               onViewDetails={handleViewDetails}
               onAddToCalendar={handleAddToCalendar}
+              onOpenWaitingListTicket={handleOpenTicketModal}
               onEditProfile={() => setCurrentView('find')}
               lowDataMode={lowDataMode}
             />
@@ -245,9 +298,11 @@ export default function App() {
             funds={funds}
             profile={profile}
             savedFundIds={savedItems.map((i) => i.fundId)}
+            appliedFundIds={savedItems.filter((i) => i.status === 'applied').map((i) => i.fundId)}
             onToggleSave={handleToggleSave}
             onViewDetails={handleViewDetails}
             onAddToCalendar={handleAddToCalendar}
+            onOpenWaitingListTicket={handleOpenTicketModal}
             onEditProfile={() => setCurrentView('find')}
             lowDataMode={lowDataMode}
           />
@@ -264,6 +319,7 @@ export default function App() {
             onRemove={handleRemoveSaved}
             onViewDetails={handleViewDetails}
             onNavigateToFinder={() => setCurrentView('find')}
+            onOpenWaitingListTicket={handleOpenTicketModal}
           />
         )}
 
@@ -283,6 +339,22 @@ export default function App() {
         onToggleSave={handleToggleSave}
         preparedDocuments={selectedSavedItem ? selectedSavedItem.preparedDocuments : []}
         onToggleDocumentPrepared={handleToggleDocumentPrepared}
+        onOpenWaitingListTicket={handleOpenTicketModal}
+      />
+
+      {/* Interactive Tear-off Waiting List Confirmation Ticket Modal */}
+      <ApplicationTicketModal
+        isOpen={isTicketModalOpen}
+        fund={ticketFund}
+        profile={profile}
+        onClose={() => {
+          setIsTicketModalOpen(false);
+          setTicketFund(null);
+        }}
+        onConfirmTear={handleConfirmTicketTear}
+        alreadyTorn={
+          ticketFund ? savedItems.some((i) => i.fundId === ticketFund.id && i.status === 'applied') : false
+        }
       />
 
       {/* Comprehensive Legal & Compliance Center Modal */}

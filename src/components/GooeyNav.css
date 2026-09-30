@@ -45,14 +45,13 @@
 
 .gooey-nav-container nav ul {
   display: flex;
-  gap: 1.5em;
+  gap: 0.5em;
   list-style: none;
-  padding: 0 0.75em;
+  padding: 0.25em 0.5em;
   margin: 0;
   position: relative;
   z-index: 3;
-  color: white;
-  text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
+  color: var(--ink);
 }
 
 .gooey-nav-container nav ul li {
@@ -60,18 +59,22 @@
   position: relative;
   cursor: pointer;
   transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
-  box-shadow: 0 0 0.5px 1.5px transparent;
-  color: white;
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: none;
+  color: var(--mute);
+}
+
+.gooey-nav-container nav ul li:hover {
+  color: var(--ink);
 }
 
 .gooey-nav-container nav ul li a,
 .gooey-nav-container nav ul li button {
   display: inline-block;
-  padding: 0.5em 1em;
-  font-size: 0.875rem;
+  padding: 0.45em 0.9em;
+  font-size: 0.85rem;
   font-weight: 600;
   font-family: inherit;
   color: inherit;
@@ -83,7 +86,7 @@
 }
 
 .gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
-  box-shadow: 0 0 0.5px 1.5px white;
+  box-shadow: 0 0 0.5px 2px var(--brown);
 }
 
 .gooey-nav-container nav ul li::after {
@@ -91,16 +94,15 @@
   position: absolute;
   inset: 0;
   border-radius: 100vw;
-  background: white;
+  background: var(--brown);
   opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
+  transform: scale(0.9);
+  transition: all 0.25s ease;
   z-index: -1;
 }
 
 .gooey-nav-container nav ul li.active {
-  color: black;
-  text-shadow: none;
+  color: #ffffff;
 }
 
 .gooey-nav-container nav ul li.active::after {
@@ -119,37 +121,29 @@
   display: grid;
   place-items: center;
   z-index: 1;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
 }
 
 .gooey-nav-container .effect.text {
-  color: white;
-  transition: color 0.3s ease;
+  color: var(--mute);
+  transition: color 0.25s ease;
 }
 
 .gooey-nav-container .effect.text.active {
-  color: black;
+  color: #ffffff;
 }
 
 .gooey-nav-container .effect.filter {
-  filter: blur(7px) contrast(100) blur(0);
-  mix-blend-mode: lighten;
-}
-
-.gooey-nav-container .effect.filter::before {
-  content: '';
-  position: absolute;
-  inset: -75px;
-  z-index: -2;
-  background: black;
+  filter: none;
+  pointer-events: none;
 }
 
 .gooey-nav-container .effect.filter::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: white;
+  background: var(--brown);
   transform: scale(0);
   opacity: 0;
   z-index: -1;
@@ -157,7 +151,7 @@
 }
 
 .gooey-nav-container .effect.active::after {
-  animation: pill 0.3s ease both;
+  animation: pill 0.25s ease both;
 }
 
 @keyframes pill {

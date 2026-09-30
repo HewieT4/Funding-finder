@@ -10,18 +10,22 @@ import { Fund, MatchResult } from '../types';
 interface FundCardProps {
   result: MatchResult;
   isSaved: boolean;
+  isApplied?: boolean;
   onToggleSave: (fund: Fund) => void;
   onViewDetails: (fund: Fund) => void;
   onAddToCalendar: (fund: Fund) => void;
+  onOpenWaitingListTicket?: (fund: Fund) => void;
   lowDataMode: boolean;
 }
 
 export const FundCard: React.FC<FundCardProps> = ({
   result,
   isSaved,
+  isApplied = false,
   onToggleSave,
   onViewDetails,
   onAddToCalendar,
+  onOpenWaitingListTicket,
   lowDataMode,
 }) => {
   const { fund, score, status, reasons, missing, daysUntilClose, urgency } = result;
@@ -190,7 +194,23 @@ export const FundCard: React.FC<FundCardProps> = ({
           {getDeadlineDisplay()}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {onOpenWaitingListTicket && (
+            <button
+              onClick={() => onOpenWaitingListTicket(fund)}
+              title={isApplied ? "Download or view your confirmed PDF waiting list slip" : "Generate official PDF waiting list slip after applying"}
+              className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                isApplied
+                  ? 'border-[var(--sage)] bg-[var(--sage)] text-white'
+                  : 'border-[var(--brown)] text-[var(--brown)] hover:bg-[var(--brown)] hover:text-white'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isApplied ? 'PDF Confirmed' : 'Waiting List PDF'}</span>
+              <span className="sm:hidden">{isApplied ? 'PDF' : 'PDF Slip'}</span>
+            </button>
+          )}
+
           <button
             onClick={() => onAddToCalendar(fund)}
             title="Download calendar deadline reminder (.ics)"

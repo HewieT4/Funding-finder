@@ -26,6 +26,7 @@ interface SavedShortlistProps {
   onRemove: (fundId: string) => void;
   onViewDetails: (fund: Fund) => void;
   onNavigateToFinder: () => void;
+  onOpenWaitingListTicket: (fund: Fund) => void;
 }
 
 export const SavedShortlist: React.FC<SavedShortlistProps> = ({
@@ -36,6 +37,7 @@ export const SavedShortlist: React.FC<SavedShortlistProps> = ({
   onRemove,
   onViewDetails,
   onNavigateToFinder,
+  onOpenWaitingListTicket,
 }) => {
   const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
   const [noteText, setNoteText] = useState<string>('');
@@ -169,25 +171,44 @@ export const SavedShortlist: React.FC<SavedShortlistProps> = ({
                     <select
                       id={`status-${fund.id}`}
                       value={item.status}
-                      onChange={(e) => onUpdateStatus(fund.id, e.target.value as ApplicationTrackingStatus)}
+                      onChange={(e) => {
+                        const newStatus = e.target.value as ApplicationTrackingStatus;
+                        onUpdateStatus(fund.id, newStatus);
+                        if (newStatus === 'applied') {
+                          onOpenWaitingListTicket(fund);
+                        }
+                      }}
                       className="w-full px-3 py-2 rounded-xl border border-[var(--line)] bg-[var(--bg)] text-xs font-medium text-[var(--ink)] cursor-pointer"
                     >
                       <option value="saved">1. Saved (Not yet started)</option>
                       <option value="docs_ready">2. Documents Certified & Ready</option>
-                      <option value="applied">3. Application Submitted on Portal</option>
+                      <option value="applied">3. Application Submitted on Portal (Waiting List)</option>
                       <option value="interview">4. Under Review / Interview Stage</option>
                       <option value="accepted">5. Awarded / Accepted</option>
                       <option value="declined">6. Declined / Not successful</option>
                     </select>
                   </div>
 
-                  <div className="sm:col-span-6 flex flex-col sm:items-end justify-center">
-                    <span className="text-xs text-[var(--mute)] mb-1">
-                      Deadline: <strong className="text-[var(--ink)]">{fund.closeDate}</strong>
-                    </span>
-                    <span className="text-xs font-semibold text-[var(--brown)] tabular-nums">
-                      {diffDays > 0 ? `${diffDays} days remaining to apply` : 'Closed'}
-                    </span>
+                  <div className="sm:col-span-6 flex flex-col sm:items-end justify-center gap-1.5">
+                    <div className="text-xs text-[var(--mute)]">
+                      <span>Deadline: </span>
+                      <strong className="text-[var(--ink)]">{fund.closeDate}</strong>
+                      <span className="ml-2 font-semibold text-[var(--brown)] tabular-nums">
+                        ({diffDays > 0 ? `${diffDays} days left` : 'Closed'})
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => onOpenWaitingListTicket(fund)}
+                      className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                        item.status === 'applied'
+                          ? 'bg-[var(--sage)] text-white border-[var(--sage)] shadow-xs'
+                          : 'border-[var(--brown)] text-[var(--brown)] hover:bg-[var(--brown)] hover:text-white'
+                      }`}
+                    >
+                      <FileCheck className="w-3.5 h-3.5" />
+                      <span>{item.status === 'applied' ? 'View Confirmed PDF' : 'Download Waiting List PDF'}</span>
+                    </button>
                   </div>
                 </div>
 

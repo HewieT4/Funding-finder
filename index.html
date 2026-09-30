@@ -9,6 +9,31 @@
     <meta property="og:description" content="Find verified South African bursaries, NSFAS funding, and scholarships matched to your marks, study field, and financial profile." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      /* Ensure window.fetch setter compatibility if any polyfill or runner attempts window.fetch = ... */
+      (function() {
+        try {
+          var target = window;
+          var desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+          if (!desc && target.Window && target.Window.prototype) {
+            target = target.Window.prototype;
+            desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+          }
+          if (desc && desc.get && !desc.set) {
+            var origFetch = window.fetch ? window.fetch.bind(window) : null;
+            var currentFetch = origFetch;
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return currentFetch; },
+              set: function(fn) { currentFetch = fn; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch (e) {
+          // ignore
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
