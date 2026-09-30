@@ -198,7 +198,7 @@ export const FundCard: React.FC<FundCardProps> = ({
           {onOpenWaitingListTicket && (
             <button
               onClick={() => onOpenWaitingListTicket(fund)}
-              title={isApplied ? "Download or view your confirmed PDF waiting list slip" : "Generate official PDF waiting list slip after applying"}
+              title="View or download your funding application summary PDF"
               className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                 isApplied
                   ? 'border-[var(--sage)] bg-[var(--sage)] text-white'
@@ -206,8 +206,8 @@ export const FundCard: React.FC<FundCardProps> = ({
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{isApplied ? 'PDF Confirmed' : 'Waiting List PDF'}</span>
-              <span className="sm:hidden">{isApplied ? 'PDF' : 'PDF Slip'}</span>
+              <span className="hidden sm:inline">{isApplied ? 'Summary Saved' : 'Summary PDF'}</span>
+              <span className="sm:hidden">Summary</span>
             </button>
           )}
 

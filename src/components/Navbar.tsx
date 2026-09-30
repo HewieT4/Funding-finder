@@ -113,15 +113,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Quick Actions (Desktop & Mobile) */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
-            {/* Waiting list PDF confirmation slips trigger button */}
+            {/* Application Summary PDF slips trigger button */}
             <button
               onClick={onOpenTicketsModal}
-              title="View your Waiting List PDF Confirmation Slips"
+              title="View your Funding Application Summaries"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[var(--line)] bg-[var(--panel)] text-[var(--ink)] hover:border-[var(--brown)] text-xs font-semibold cursor-pointer transition-colors"
-              aria-label="View Waiting List PDF Slips"
+              aria-label="View Application Summary Slips"
             >
               <FileCheck className="w-3.5 h-3.5 text-[var(--brown)]" />
-              <span className="hidden md:inline">PDF Slips</span>
+              <span className="hidden md:inline">Summary Slips</span>
               {appliedCount > 0 && (
                 <span className="px-1.5 py-0.2 rounded-full bg-[var(--brown)] text-white text-[10px] tabular-nums font-bold">
                   {appliedCount}
@@ -282,8 +282,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full min-h-[48px] px-4 py-3 rounded-xl flex items-center justify-between text-[var(--brown)] font-bold bg-[var(--bg)] border border-[var(--brown)] cursor-pointer"
               >
                 <div className="flex items-center gap-2">
-                  <Ticket className="w-4 h-4" />
-                  <span>Waiting List Confirmation Tickets</span>
+                  <FileText className="w-4 h-4" />
+                  <span>Funding Application Summaries</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded bg-[var(--panel)] border border-[var(--line)]">
                   {appliedCount} Active
@@ -402,10 +402,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         <button
           onClick={onOpenTicketsModal}
           className="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] rounded-lg transition-colors cursor-pointer text-[var(--mute)] hover:text-[var(--ink)]"
-          aria-label="Waiting list confirmation PDF slips"
+          aria-label="Application summary PDF slips"
         >
           <FileCheck className="w-5 h-5 mb-0.5 text-[var(--brown)]" />
-          <span className="text-[10px] font-medium">PDF Slips</span>
+          <span className="text-[10px] font-medium">Summaries</span>
         </button>
       </nav>
     </>

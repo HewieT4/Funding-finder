@@ -82,3 +82,75 @@ h1, h2, h3, h4, .font-display {
   transition: none !important;
   animation: none !important;
 }
+
+/* ==========================================================================
+   A4 Printable Application Summary Slip Stylesheet
+   Ensures 186mm printable width (210mm - 2x12mm margin), crisp text,
+   background colors retained, and zero element clipping.
+   ========================================================================== */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  *, *::before, *::after {
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+    color: #1F1711 !important;
+    font-size: 11pt !important;
+  }
+
+  /* Hide app navigation, main content, and non-printable elements */
+  header, nav, #main-content, .no-print {
+    display: none !important;
+  }
+
+  /* Unconstrain modal overlay so only the slip is printed */
+  [role="dialog"] {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+  }
+
+  .printable-modal-inner {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    max-width: 186mm !important;
+    width: 186mm !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  .printable-slip-sheet {
+    max-width: 186mm !important;
+    width: 186mm !important;
+    margin: 0 auto !important;
+    padding: 14px !important;
+    border: 1px solid #D0C3B2 !important;
+    background: #FAF8F5 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .printable-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+

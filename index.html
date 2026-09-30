@@ -10,27 +10,64 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <script>
-      /* Ensure window.fetch setter compatibility if any polyfill or runner attempts window.fetch = ... */
+      /* Ensure global fetch property has a setter across window, globalThis, and prototype chain */
       (function() {
         try {
-          var target = window;
-          var desc = Object.getOwnPropertyDescriptor(target, 'fetch');
-          if (!desc && target.Window && target.Window.prototype) {
-            target = target.Window.prototype;
-            desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+          var globalObj = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this);
+          var realFetch = globalObj.fetch ? globalObj.fetch.bind(globalObj) : null;
+          var activeFetch = realFetch;
+
+          function getFetch() {
+            return activeFetch || realFetch;
           }
-          if (desc && desc.get && !desc.set) {
-            var origFetch = window.fetch ? window.fetch.bind(window) : null;
-            var currentFetch = origFetch;
-            Object.defineProperty(window, 'fetch', {
-              get: function() { return currentFetch; },
-              set: function(fn) { currentFetch = fn; },
+          function setFetch(fn) {
+            activeFetch = fn;
+          }
+
+          // Define getter and setter on globalObj
+          try {
+            Object.defineProperty(globalObj, 'fetch', {
+              get: getFetch,
+              set: setFetch,
               configurable: true,
               enumerable: true
             });
+          } catch (e1) {
+            try {
+              globalObj.fetch = activeFetch;
+            } catch (e2) {}
           }
-        } catch (e) {
-          // ignore
+
+          // Define on Window.prototype if available
+          if (globalObj.Window && globalObj.Window.prototype) {
+            try {
+              Object.defineProperty(globalObj.Window.prototype, 'fetch', {
+                get: getFetch,
+                set: setFetch,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e3) {}
+          }
+
+          // Walk prototype chain to ensure no prototype blocks property assignment
+          var proto = globalObj;
+          while (proto) {
+            try {
+              var d = Object.getOwnPropertyDescriptor(proto, 'fetch');
+              if (d && (d.get || !d.writable || !d.set)) {
+                Object.defineProperty(proto, 'fetch', {
+                  get: getFetch,
+                  set: setFetch,
+                  configurable: true,
+                  enumerable: true
+                });
+              }
+            } catch (e4) {}
+            proto = Object.getPrototypeOf ? Object.getPrototypeOf(proto) : proto.__proto__;
+          }
+        } catch (err) {
+          // Safe fallback
         }
       })();
     </script>

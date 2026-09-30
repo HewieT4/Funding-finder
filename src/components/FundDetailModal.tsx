@@ -282,15 +282,15 @@ export const FundDetailModal: React.FC<FundDetailModalProps> = ({
             </p>
           </div>
 
-          {/* Post-Application Waiting List PDF Slip Action */}
+          {/* Application Summary PDF Action */}
           <div className="p-4 rounded-2xl border border-[var(--brown)] bg-[var(--panel-hover)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="space-y-1">
               <span className="font-bold text-[var(--ink)] block flex items-center gap-1.5 text-sm">
                 <FileCheck className="w-4 h-4 text-[var(--brown)]" />
-                <span>Finished applying on the portal?</span>
+                <span>Need an offline application summary?</span>
               </span>
               <p className="text-[var(--mute)]">
-                Confirm your submission and generate an official waiting list confirmation PDF file with your unique verification code.
+                Generate your printable A4 summary slip with checklist, deadline, official portal link, and personal reference code.
               </p>
             </div>
             {onOpenWaitingListTicket && (
@@ -303,7 +303,7 @@ export const FundDetailModal: React.FC<FundDetailModalProps> = ({
                 className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[var(--brown)] text-white hover:bg-[var(--brown-hover)] font-semibold transition-colors cursor-pointer shrink-0 text-center flex items-center justify-center gap-1.5"
               >
                 <FileText className="w-4 h-4" />
-                <span>Download Waiting List PDF</span>
+                <span>Application Summary PDF</span>
               </button>
             )}
           </div>
@@ -333,7 +333,7 @@ export const FundDetailModal: React.FC<FundDetailModalProps> = ({
                 className="px-4 py-2.5 rounded-xl border border-[var(--brown)] text-[var(--brown)] hover:bg-[var(--brown)] hover:text-white text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>Waiting List PDF Slip</span>
+                <span>Summary Slip</span>
               </button>
             )}
 

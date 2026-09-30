@@ -182,7 +182,7 @@ export const SavedShortlist: React.FC<SavedShortlistProps> = ({
                     >
                       <option value="saved">1. Saved (Not yet started)</option>
                       <option value="docs_ready">2. Documents Certified & Ready</option>
-                      <option value="applied">3. Application Submitted on Portal (Waiting List)</option>
+                      <option value="applied">3. Application Submitted on Provider Portal</option>
                       <option value="interview">4. Under Review / Interview Stage</option>
                       <option value="accepted">5. Awarded / Accepted</option>
                       <option value="declined">6. Declined / Not successful</option>
@@ -207,7 +207,7 @@ export const SavedShortlist: React.FC<SavedShortlistProps> = ({
                       }`}
                     >
                       <FileCheck className="w-3.5 h-3.5" />
-                      <span>{item.status === 'applied' ? 'View Confirmed PDF' : 'Download Waiting List PDF'}</span>
+                      <span>{item.status === 'applied' ? 'View Application Summary' : 'Download Summary PDF'}</span>
                     </button>
                   </div>
                 </div>

@@ -184,7 +184,7 @@ export default function App() {
   const handleConfirmTicketTear = (fundId: string, refCode: string) => {
     setSavedItems((prev) => {
       const existing = prev.find((i) => i.fundId === fundId);
-      const noteMsg = `Waiting List Confirmed (Ref: ${refCode})`;
+      const noteMsg = `Shortlisted Summary Saved (Ref: ${refCode})`;
       if (existing) {
         return prev.map((i) =>
           i.fundId === fundId
